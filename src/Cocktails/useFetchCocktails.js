@@ -3,7 +3,7 @@ import {useState, useCallback, useEffect} from "react"
 // used in CocktailsList.js
 function useFetchCocktails(url) {
     const [loading, setLoading] = useState(true)
-    const [cocktails, setCocktails] = useState()
+    const [cocktails, setCocktails] = useState([])
     const getCocktails = useCallback(async() => {
         const response = await fetch(url)
         const cocktailList = await response.json()
