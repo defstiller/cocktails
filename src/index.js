@@ -1,35 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router, Route, Switch } from "react-reouter-dom";
+import React, { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from "./Navbar/Navbar"
+import Error from "./Error"
+import About from "./AboutPage/About"
+import Cocktail from "./Cocktails/Cocktail"
+import Home from "./Home"
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
-    <Router>
-      <Navbar />
-      <Switch>
-        <Route exact path="/">
-          <App />
-        </Route>
-
-        <Route exact path="/about">
-          <About />
-        </Route>
-
-        <Route path="/product-details/:id" children={<Product />}></Route>
-
-        <Route path="*">
-          <About />
-        </Route>
-      </Switch>
-    </Router>
-    <App />
-  </React.StrictMode>,
+  <StrictMode>
+  <Router>
+    <Routes>
+      <Route exact path="/" element={<><Navbar /><Home /></>} />
+      <Route exact path="about" element={<><Navbar /><About /></>} />
+      <Route path='/person/:id' element={<Cocktail/>} />
+      <Route path="*" element={<Error />}/>
+    </Routes>
+  </Router>
+  </StrictMode>
+,
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
