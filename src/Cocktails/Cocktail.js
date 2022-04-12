@@ -1,5 +1,7 @@
+import {Link} from "react-router-dom"
 function Cocktail(props) {
-    const {strAlcoholic : isAlcoholic, 
+    const {
+        strAlcoholic : isAlcoholic, 
         strCategory : category, 
         strDrink : name, 
         strDrinkThumb : image, 
@@ -7,7 +9,8 @@ function Cocktail(props) {
         strInstructions : Instructions,
         strIBA : special,
         strTags : tags,
-        strVideo : video} = props //sets new names for default keys
+        strVideo : video,
+        idDrink : id} = props //sets new names for default keys
 
     return <div>
         <img src={image} alt={name}/>
@@ -15,7 +18,7 @@ function Cocktail(props) {
         <p>{glassType}</p>
         <p>{isAlcoholic}</p>
         {special && <p>{special}</p>}
-        <button>Details</button>
+        <Link to={`/product/${id}`}>Details</Link>
     </div>
 }
 export default Cocktail;
