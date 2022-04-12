@@ -1,19 +1,47 @@
+import {useEffect, useState} from "react"
 import useFetchProducts from "./useFetchProducts"
 import Cocktail from "./Cocktail"
-import sessionStorage from "./sessionStorage"
 /**
  * It fetches the data from the API and displays the results.
  * @returns A loading indicator and a list of cocktails.
  */
 function CocktailsList() {
-        const {getSessionStorage} = sessionStorage()
         const {loading, loadedProducts} = useFetchProducts()  
-        const data = JSON.parse(window.sessionStorage.getItem("products"))
+        const [searchResult, setSearchResult] = useState()
+        const [searchInput, setSearchInput] = useState('')
+        function handleInputChange(e) {
+            const userInput = e.target.value
+            setSearchInput(userInput)
+        }
+        function handleSearch() {
+            if(searchInput) {
+                const filteredItems = []
+                const search = searchInput.toLowerCase()
+                loadedProducts.map(drink => {
+                    const drinkName = drink.strDrink.toLowerCase()
+                    if (drinkName.includes(search)) {
+                    filteredItems.push(drink)
+                    }
+                    return false
+                })
+                    setSearchResult(filteredItems)
+            } else {
+                setSearchResult(loadedProducts)
+            }
+ 
+        }
+        useEffect(() => {
+            handleSearch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [searchInput])
+    
 /* Returning the loading indicator while fetch is getting data, and then shows list of cocktails. */
     return <>
+        <input placeholder="Search for" value={searchInput} onChange={e => handleInputChange(e)}></input>
         {loading ? 
         <img src="../loader.svg" alt="Loading"/> : 
-        data.map(drink => {
+        searchResult && searchResult.map(drink => {
+        // loadedProducts.map(drink => {
             return <Cocktail key={drink.idDrink} {...drink} />})} 
         </>
 
