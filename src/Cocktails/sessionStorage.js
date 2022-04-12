@@ -10,7 +10,7 @@ function sessionStorage() {
         }
      
         const item = JSON.parse(data);
-        return item.value;
+        return item;
     };
     return {setSessionStorage, getSessionStorage}
 }
