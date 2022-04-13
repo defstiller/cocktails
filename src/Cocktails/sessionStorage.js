@@ -5,7 +5,7 @@ function sessionStorage() {
     };
     const getSessionStorage = (name) => {
         const data = window.sessionStorage.getItem(name);
-        if (!data) {     // if no value exists associated with the key, return null
+        if (!data) {     // if no value exists in sessionStorage return null
             return null;
         }
      
