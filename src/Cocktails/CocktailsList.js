@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+import {useEffect, useState, useRef} from "react"
 import useFetchProducts from "./useFetchProducts"
 import Cocktail from "./Cocktail"
 /**
@@ -7,7 +7,7 @@ import Cocktail from "./Cocktail"
  */
 function CocktailsList() {
         const {loading, loadedProducts} = useFetchProducts()  
-        const [searchResult, setSearchResult] = useState()
+        const [searchResult, setSearchResult] = useState(loadedProducts)
         const [searchInput, setSearchInput] = useState('')
         function handleInputChange(e) {
             const userInput = e.target.value
@@ -28,21 +28,24 @@ function CocktailsList() {
             } else {
                 setSearchResult(loadedProducts)
             }
- 
         }
         useEffect(() => {
             handleSearch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [searchInput])
-    
+        useEffect(() => {
+            setSearchResult(loadedProducts)
+        }, [loadedProducts])
+
 /* Returning the loading indicator while fetch is getting data, and then shows list of cocktails. */
     return <>
         <input placeholder="Search for" value={searchInput} onChange={e => handleInputChange(e)}></input>
         {loading ? 
         <img src="../loader.svg" alt="Loading"/> : 
-        searchResult && searchResult.map(drink => {
+         searchResult && searchResult.map(drink => {
         // loadedProducts.map(drink => {
             return <Cocktail key={drink.idDrink} {...drink} />})} 
+        
         </>
 
 
