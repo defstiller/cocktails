@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useCallback} from "react"
 import sessionStorage from "./sessionStorage"
 
 /**
@@ -10,11 +10,11 @@ import sessionStorage from "./sessionStorage"
 function useFetchProducts() {
     const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s="
     const [loading, setLoading] = useState(true)
-    const [loadedProducts, setProducts] = useState()
+    const [loadedProducts, setProducts] = useState([])
     const {getSessionStorage, setSessionStorage} = sessionStorage()
     const data = getSessionStorage("products")
   
-    const getProducts = async () => {
+    const getProducts = useCallback(async () => {
         if (data) { // if session storage exist set products as session storage, set loading false
             setProducts(data)
             setLoading(false)
@@ -23,13 +23,13 @@ function useFetchProducts() {
         const response = await fetch(url)
         const products = await response.json()
         setSessionStorage("products", products.drinks)
-        console.log(loadedProducts)
         setLoading(false)
         }
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading])
     useEffect(() =>{
         getProducts()
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [getProducts]) 
     return {loading, loadedProducts}
 }
 
