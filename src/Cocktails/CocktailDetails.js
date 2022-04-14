@@ -1,50 +1,60 @@
 import {useState, useEffect, useCallback, useRef} from "react"
-import {useLocation} from "react-router-dom"
+import {useParams} from "react-router-dom"
+import useFetchProducts from "./useFetchProducts"
 function CocktailDetails() {
-    const location = useLocation()
+    const {loading, loadedProducts} = useFetchProducts()
+    const {id} = useParams()
+    const [drink, setDrink] = useState()
     const [ingredients, setIngredients] = useState([])
-    function getIngredients() {
+    function findDrinkById(products) {
+        const foundProduct = products.find( product => product.idDrink === id)
+        return foundProduct
+    }
+    async function getIngredients(drink) {
         const name = "strIngredient"
         let index = 1
-        while(location.state.props[name+index]) {
-            const ingredientName = location.state.props[name+index]
-            setIngredients(steps => [...steps, ingredientName])
+        const ingredients = []
+        while(drink[name+index]) { // go though ingredients AKA ingredient1 === true = push it into ingredients[], if ingredient2 === false = return ingredients[]
+            ingredients.push({key:`ingredient${index}`, ingredientName:drink[name+index]})
             index += 1
         }
-        return index
+        
+        return ingredients
     }
-    useEffect(() => {
-        getIngredients()
-    },[])
+    const startUpPage= async () => { // on page load will get product by matching ID, then get ingredients, will set ingredients is setIngredients, and set full drink in setDrink
+        const foundById = await findDrinkById(loadedProducts)
+        const foundIngredients = await getIngredients(foundById)
+        setIngredients(foundIngredients)
+        setDrink(foundById)
+    }
+    useEffect(() => { // if data is loaded will initialize startUpPage function
+        if(loading) { 
+            return
+        }
+        startUpPage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[loadedProducts])
 
-    const {
-        strAlcoholic : isAlcoholic, 
-        strCategory : category, 
-        strDrink : name, 
-        strDrinkThumb : image, 
-        strGlass: glassType,
-        strInstructions : instructions,
-        strIBA : special,
-        strTags : tags,
-        strVideo : video,
-        strDrinkAlternate : alternate,
-        strCreativeCommonsConfirmed : creativeCommons,
-        strImageAttribution : imageAttribution,
-     } = location.state.props 
+     if(!drink) {
+         return <p>loading</p>
+     } else {
      return  <>
+        {ingredients.map(ingredient => {
+            return <p key={ingredient.key}>{ingredient.ingredientName}</p>
+        })}
         <figure>
-            <img src={image} alt={name} />
-            {imageAttribution && <figcaption>{imageAttribution}</figcaption>}
+            <img src={drink.strDrinkThumb} alt={drink.strDrink} />
+            {drink.strImageAttribution && <figcaption>{drink.strImageAttribution}</figcaption>}
         </figure>
-        {video && <video controls autoplay muted src={video}>
+        {drink.strVideo && <video controls autoplay muted src={drink.strVideo}>
             Your browser does not support the video tag.
         </video> }
-        <p>{name}</p>
-        {ingredients.map(step => <p key={Math.random() * 300}>{step}</p>)}
-        <p>{isAlcoholic}</p>
-        <p>{category}</p>
-        <p>{instructions}</p>
+        <p>{drink.strDrink}</p>
+        <p>{drink.strAlcoholic}</p>
+        <p>{drink.strCategory}</p>
+        <p>{drink.strInstructions}</p> 
     </>
+     }
 
         
 
