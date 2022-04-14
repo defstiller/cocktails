@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback, useRef} from "react"
+import {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 import useFetchProducts from "./useFetchProducts"
 function CocktailDetails() {
@@ -12,10 +12,16 @@ function CocktailDetails() {
     }
     async function getIngredients(drink) {
         const name = "strIngredient"
+        const measure = "strMeasure"
         let index = 1
         const ingredients = []
-        while(drink[name+index]) { // go though ingredients AKA ingredient1 === true = push it into ingredients[], if ingredient2 === false = return ingredients[]
-            ingredients.push({key:`ingredient${index}`, ingredientName:drink[name+index]})
+        while(drink[name+index]) { // go through ingredients --- ingredient1 === true = push it into ingredients[], if ingredient2 === false = return ingredients[]
+                ingredients.push({ 
+                    key:`ingredient${index}`, 
+                    ingredientName:drink[name+index],
+                    ...(drink[measure+index] && {measure: drink[measure+index]}) //if measure for drink is found add measure
+                })
+
             index += 1
         }
         
@@ -40,7 +46,7 @@ function CocktailDetails() {
      } else {
      return  <>
         {ingredients.map(ingredient => {
-            return <p key={ingredient.key}>{ingredient.ingredientName}</p>
+            return <p key={ingredient.key}>{ingredient.ingredientName} {ingredient.measure ? ingredient.measure : "No measurements found"}</p>
         })}
         <figure>
             <img src={drink.strDrinkThumb} alt={drink.strDrink} />
