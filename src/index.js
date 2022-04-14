@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from "./Navbar/Navbar"
 import Error from "./Error"
 import About from "./AboutPage/About"
-import Cocktail from "./Cocktails/Cocktail"
 import Home from "./Home"
 import CocktailDetails from './Cocktails/CocktailDetails';
 const root = ReactDOM.createRoot(document.getElementById('root'))
