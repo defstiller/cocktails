@@ -15,7 +15,7 @@ root.render(
     <Routes>
       <Route exact path="/" element={<><Navbar /><Home /></>} />
       <Route exact path="about" element={<><Navbar /><About /></>} />
-      <Route path='/product/:id' element={<CocktailDetails/>} />
+      <Route path='/product/:id' element={<><Navbar /><CocktailDetails/></>} />
       <Route path="*" element={<Error />}/>
     </Routes>
   </Router>
