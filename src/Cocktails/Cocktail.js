@@ -6,10 +6,7 @@ function Cocktail(props) {
         strDrink : name, 
         strDrinkThumb : image, 
         strGlass: glassType,
-        strInstructions : Instructions,
         strIBA : special,
-        strTags : tags,
-        strVideo : video,
         idDrink : id} = props //sets new names for default keys
 
     return <div>
@@ -18,7 +15,7 @@ function Cocktail(props) {
         <p>{glassType}</p>
         <p>{isAlcoholic}</p>
         {special && <p>{special}</p>}
-        <Link to={`/product/${id}`}>Details</Link>
+        <Link to={`/product/${id}`} state={{props}}><button>Details</button></Link>
     </div>
 }
 export default Cocktail;
