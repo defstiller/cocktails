@@ -15,7 +15,7 @@ function Cocktail(props) {
         <p>{glassType}</p>
         <p>{isAlcoholic}</p>
         {special && <p>{special}</p>}
-        <Link to={`/product/${id}`} state={{props}}><button>Details</button></Link>
+        <Link to={`/product/${id}`}><button>Details</button></Link>
     </div>
 }
 export default Cocktail;
