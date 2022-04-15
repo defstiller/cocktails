@@ -52,9 +52,6 @@ function CocktailDetails() {
             <img src={drink.strDrinkThumb} alt={drink.strDrink} />
             {drink.strImageAttribution && <figcaption>{drink.strImageAttribution}</figcaption>}
         </figure>
-        {drink.strVideo && <video controls autoplay muted src={drink.strVideo}>
-            Your browser does not support the video tag.
-        </video> }
         <p>{drink.strDrink}</p>
         <p>{drink.strAlcoholic}</p>
         <p>{drink.strCategory}</p>
